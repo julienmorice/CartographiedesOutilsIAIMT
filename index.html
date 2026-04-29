@@ -13,6 +13,9 @@
     --bleu: #1d4ed8; --bleu-bg: #dbeafe; --bleu-clair: #eff6ff;
     --violet: #7c3aed; --violet-bg: #ede9fe;
     --teal: #0d9488; --teal-bg: #ccfbf1;
+    --indigo: #4338ca; --indigo-bg: #e0e7ff;
+    --amber: #b45309; --amber-bg: #fef3c7;
+    --slate: #475569; --slate-bg: #f1f5f9;
     --border: #e5e7eb; --text: #111827; --text-muted: #6b7280;
     --bg: #f9fafb; --white: #ffffff;
     --shadow: 0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
@@ -23,12 +26,7 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-  header {
-    background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%);
-    color: white; padding: 20px 32px;
-    display: flex; align-items: center; justify-content: space-between;
-    box-shadow: var(--shadow-md);
-  }
+  header { background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%); color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-md); }
   header h1 { font-size: 1.4rem; font-weight: 700; }
   header p { font-size: .85rem; opacity: .8; margin-top: 2px; }
   .header-actions { display: flex; gap: 10px; }
@@ -40,10 +38,7 @@
 
   .layout { display: flex; min-height: calc(100vh - 72px); }
 
-  aside {
-    width: 260px; min-width: 260px; background: var(--white); border-right: 1px solid var(--border);
-    padding: 20px; overflow-y: auto; position: sticky; top: 0; max-height: calc(100vh - 72px);
-  }
+  aside { width: 260px; min-width: 260px; background: var(--white); border-right: 1px solid var(--border); padding: 20px; overflow-y: auto; position: sticky; top: 0; max-height: calc(100vh - 72px); }
   .sidebar-section { margin-bottom: 24px; }
   .sidebar-title { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-bottom: 10px; }
   .filter-group { display: flex; flex-direction: column; gap: 6px; }
@@ -71,7 +66,7 @@
   .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
   .cards-grid.list-view { grid-template-columns: 1fr; }
 
-  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); transition: all .15s; cursor: default; display: flex; flex-direction: column; gap: 10px; position: relative; }
+  .card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px; box-shadow: var(--shadow); transition: all .15s; cursor: default; display: flex; flex-direction: column; gap: 10px; }
   .card:hover { box-shadow: var(--shadow-md); border-color: #c7d2fe; transform: translateY(-1px); }
   .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
   .card-name { font-size: 1rem; font-weight: 700; color: var(--text); }
@@ -83,18 +78,21 @@
 
   .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
   .tag { font-size: .75rem; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
-  .tag-usage { background: var(--bleu-bg); color: var(--bleu); }
-  .tag-public { background: #f5f3ff; color: #6d28d9; }
-  .tag-alt { background: #ecfdf5; color: #065f46; }
-  .tag-opensource { background: var(--teal-bg); color: var(--teal); }
-  .tag-proprio { background: var(--violet-bg); color: var(--violet); }
+  .tag-usage     { background: var(--bleu-bg); color: var(--bleu); }
+  .tag-public    { background: #f5f3ff; color: #6d28d9; }
+  .tag-alt       { background: #ecfdf5; color: #065f46; }
+  .tag-opensource{ background: var(--teal-bg); color: var(--teal); }
+  .tag-proprio   { background: var(--violet-bg); color: var(--violet); }
+  .tag-ens       { background: var(--indigo-bg); color: var(--indigo); }
+  .tag-rech      { background: var(--amber-bg); color: var(--amber); }
+  .tag-admin     { background: var(--slate-bg); color: var(--slate); }
 
   .card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .badge { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; }
-  .badge-vert { background: var(--vert-bg); color: var(--vert); }
+  .badge-vert   { background: var(--vert-bg); color: var(--vert); }
   .badge-orange { background: var(--orange-bg); color: var(--orange); }
-  .badge-rouge { background: var(--rouge-bg); color: var(--rouge); }
-  .badge-gris { background: var(--gris-bg); color: var(--gris); }
+  .badge-rouge  { background: var(--rouge-bg); color: var(--rouge); }
+  .badge-gris   { background: var(--gris-bg); color: var(--gris); }
   .stars { color: #f59e0b; font-size: .85rem; letter-spacing: .5px; }
 
   .card-desc { font-size: .82rem; color: var(--text-muted); line-height: 1.5; }
@@ -110,9 +108,9 @@
   .list-view .card-date { display: none; }
 
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
-  .empty-state p { font-size: 1rem; }
   .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
 
+  /* MODAL */
   .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 100; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .2s; }
   .modal-backdrop.open { opacity: 1; pointer-events: all; }
   .modal { background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); transform: scale(.95); transition: transform .2s; }
@@ -128,24 +126,27 @@
   .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   label { font-size: .82rem; font-weight: 600; color: var(--text); }
   label .required { color: var(--rouge); }
-  input[type=text], input[type=url], textarea, select { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: .875rem; outline: none; transition: border-color .15s; font-family: inherit; background: white; color: var(--text); width: 100%; }
-  input:focus, textarea:focus, select:focus { border-color: var(--bleu); }
+  input[type=text], input[type=url], textarea { padding: 8px 12px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: .875rem; outline: none; transition: border-color .15s; font-family: inherit; background: white; color: var(--text); width: 100%; }
+  input:focus, textarea:focus { border-color: var(--bleu); }
   textarea { resize: vertical; min-height: 72px; }
 
-  .star-select { display: flex; gap: 8px; }
-  .star-option { display: none; }
+  .star-select { display: flex; gap: 8px; align-items: center; }
   .star-label { cursor: pointer; font-size: 1.5rem; color: #d1d5db; transition: color .1s; padding: 4px; border-radius: 6px; }
   .star-label:hover, .star-label.active { color: #f59e0b; }
 
-  .souv-select, .licence-select { display: flex; gap: 8px; flex-wrap: wrap; }
-  .souv-label, .licence-label { cursor: pointer; padding: 6px 12px; border-radius: 6px; font-size: .82rem; font-weight: 600; border: 2px solid var(--border); transition: all .1s; }
-  .souv-label[data-value="Vert"]:hover, .souv-label[data-value="Vert"].active { background: var(--vert-bg); color: var(--vert); border-color: var(--vert); }
-  .souv-label[data-value="Orange"]:hover, .souv-label[data-value="Orange"].active { background: var(--orange-bg); color: var(--orange); border-color: var(--orange); }
-  .souv-label[data-value="Rouge"]:hover, .souv-label[data-value="Rouge"].active { background: var(--rouge-bg); color: var(--rouge); border-color: var(--rouge); }
-  .souv-label[data-value=""].active { background: var(--gris-bg); color: var(--gris); border-color: var(--gris); }
-  .licence-label[data-value="Open-source"]:hover, .licence-label[data-value="Open-source"].active { background: var(--teal-bg); color: var(--teal); border-color: var(--teal); }
-  .licence-label[data-value="Propriétaire"]:hover, .licence-label[data-value="Propriétaire"].active { background: var(--violet-bg); color: var(--violet); border-color: var(--violet); }
-  .licence-label[data-value=""].active { background: var(--gris-bg); color: var(--gris); border-color: var(--gris); }
+  /* Generic multi/single selector */
+  .pill-select { display: flex; gap: 8px; flex-wrap: wrap; }
+  .pill-btn { cursor: pointer; padding: 6px 12px; border-radius: 6px; font-size: .82rem; font-weight: 600; border: 2px solid var(--border); transition: all .1s; background: white; user-select: none; }
+  .pill-btn[data-group="souv"][data-value="Vert"]:hover,  .pill-btn[data-group="souv"][data-value="Vert"].active  { background: var(--vert-bg);    color: var(--vert);    border-color: var(--vert); }
+  .pill-btn[data-group="souv"][data-value="Orange"]:hover,.pill-btn[data-group="souv"][data-value="Orange"].active{ background: var(--orange-bg);  color: var(--orange);  border-color: var(--orange); }
+  .pill-btn[data-group="souv"][data-value="Rouge"]:hover, .pill-btn[data-group="souv"][data-value="Rouge"].active { background: var(--rouge-bg);   color: var(--rouge);   border-color: var(--rouge); }
+  .pill-btn[data-group="souv"][data-value=""].active      { background: var(--gris-bg);   color: var(--gris);    border-color: var(--gris); }
+  .pill-btn[data-group="lic"][data-value="Open-source"]:hover,  .pill-btn[data-group="lic"][data-value="Open-source"].active  { background: var(--teal-bg);   color: var(--teal);   border-color: var(--teal); }
+  .pill-btn[data-group="lic"][data-value="Propriétaire"]:hover, .pill-btn[data-group="lic"][data-value="Propriétaire"].active { background: var(--violet-bg); color: var(--violet); border-color: var(--violet); }
+  .pill-btn[data-group="lic"][data-value=""].active       { background: var(--gris-bg);   color: var(--gris);   border-color: var(--gris); }
+  .pill-btn[data-group="dom"][data-value="Enseignement"]:hover, .pill-btn[data-group="dom"][data-value="Enseignement"].active { background: var(--indigo-bg); color: var(--indigo); border-color: var(--indigo); }
+  .pill-btn[data-group="dom"][data-value="Recherche"]:hover,    .pill-btn[data-group="dom"][data-value="Recherche"].active    { background: var(--amber-bg);  color: var(--amber);  border-color: var(--amber); }
+  .pill-btn[data-group="dom"][data-value="Administratif"]:hover,.pill-btn[data-group="dom"][data-value="Administratif"].active{ background: var(--slate-bg);  color: var(--slate);  border-color: var(--slate); }
 
   .alt-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; }
   .toggle { width: 42px; height: 24px; background: var(--border); border-radius: 99px; position: relative; transition: background .15s; flex-shrink: 0; }
@@ -159,11 +160,10 @@
   .btn-modal-delete { background: var(--rouge-bg); color: var(--rouge); margin-right: auto; }
   .btn-modal-delete:hover { background: #fca5a5; }
 
-  .legend-panel { position: fixed; bottom: 20px; right: 20px; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; box-shadow: var(--shadow-lg); font-size: .78rem; max-width: 280px; z-index: 50; transform: translateY(120%); transition: transform .2s; }
+  .legend-panel { position: fixed; bottom: 20px; right: 20px; background: white; border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; box-shadow: var(--shadow-lg); font-size: .78rem; max-width: 290px; z-index: 50; transform: translateY(120%); transition: transform .2s; }
   .legend-panel.open { transform: translateY(0); }
   .legend-panel h3 { font-size: .8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
   .legend-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
-  .legend-row:last-child { margin-bottom: 0; }
   .legend-icon { flex-shrink: 0; width: 16px; text-align: center; }
   .legend-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 51; border-radius: 99px; padding: 8px 14px; font-size: .8rem; background: var(--bleu); color: white; border: none; cursor: pointer; box-shadow: var(--shadow-md); }
   .legend-panel.open ~ .legend-toggle { display: none; }
@@ -210,43 +210,52 @@
     </div>
 
     <div class="sidebar-section">
+      <div class="sidebar-title">Domaine</div>
+      <div class="filter-group">
+        <label class="filter-item"><input type="checkbox" value="Enseignement"  onchange="applyFilters()"> <span style="color:var(--indigo);font-weight:600;">🎓 Enseignement</span>  <span class="count" id="cnt-dom-Enseignement">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="Recherche"     onchange="applyFilters()"> <span style="color:var(--amber);font-weight:600;">🔬 Recherche</span>     <span class="count" id="cnt-dom-Recherche">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="Administratif" onchange="applyFilters()"> <span style="color:var(--slate);font-weight:600;">🗂 Administratif</span> <span class="count" id="cnt-dom-Administratif">0</span></label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
       <div class="sidebar-title">Cas d'usage</div>
       <div class="filter-group" id="filterUsage"></div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-title">Licence</div>
-      <div class="filter-group" id="filterLicence">
-        <label class="filter-item"><input type="checkbox" value="Open-source" onchange="applyFilters()"> <span style="color:var(--teal);font-weight:600;">🟩 Open-source</span> <span class="count" id="cnt-lic-Open-source">0</span></label>
+      <div class="filter-group">
+        <label class="filter-item"><input type="checkbox" value="Open-source"  onchange="applyFilters()"> <span style="color:var(--teal);font-weight:600;">🟩 Open-source</span>  <span class="count" id="cnt-lic-Open-source">0</span></label>
         <label class="filter-item"><input type="checkbox" value="Propriétaire" onchange="applyFilters()"> <span style="color:var(--violet);font-weight:600;">🟪 Propriétaire</span> <span class="count" id="cnt-lic-Propriétaire">0</span></label>
-        <label class="filter-item"><input type="checkbox" value="" onchange="applyFilters()"> <span class="badge badge-gris">❓ Non renseigné</span> <span class="count" id="cnt-lic-">0</span></label>
+        <label class="filter-item"><input type="checkbox" value=""             onchange="applyFilters()"> <span class="badge badge-gris">❓ Non renseigné</span>                   <span class="count" id="cnt-lic-">0</span></label>
       </div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-title">Souveraineté</div>
       <div class="filter-group" id="filterSouv">
-        <label class="filter-item"><input type="checkbox" value="Vert" onchange="applyFilters()"> <span class="badge badge-vert">🟢 Européen</span> <span class="count" id="cnt-Vert">0</span></label>
-        <label class="filter-item"><input type="checkbox" value="Orange" onchange="applyFilters()"> <span class="badge badge-orange">🟠 Mixte</span> <span class="count" id="cnt-Orange">0</span></label>
-        <label class="filter-item"><input type="checkbox" value="Rouge" onchange="applyFilters()"> <span class="badge badge-rouge">🔴 Non-EU</span> <span class="count" id="cnt-Rouge">0</span></label>
-        <label class="filter-item"><input type="checkbox" value="" onchange="applyFilters()"> <span class="badge badge-gris">❓ Non renseigné</span> <span class="count" id="cnt-">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="Vert"   onchange="applyFilters()"> <span class="badge badge-vert">🟢 Européen</span>      <span class="count" id="cnt-Vert">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="Orange" onchange="applyFilters()"> <span class="badge badge-orange">🟠 Mixte</span>        <span class="count" id="cnt-Orange">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="Rouge"  onchange="applyFilters()"> <span class="badge badge-rouge">🔴 Non-EU</span>        <span class="count" id="cnt-Rouge">0</span></label>
+        <label class="filter-item"><input type="checkbox" value=""       onchange="applyFilters()"> <span class="badge badge-gris">❓ Non renseigné</span>  <span class="count" id="cnt-">0</span></label>
       </div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-title">Compétences requises</div>
-      <div class="filter-group" id="filterComp">
-        <label class="filter-item"><input type="checkbox" value="1" onchange="applyFilters()"> ⭐ Débutant <span class="count" id="cnt-comp-1">0</span></label>
+      <div class="filter-group">
+        <label class="filter-item"><input type="checkbox" value="1" onchange="applyFilters()"> ⭐ Débutant       <span class="count" id="cnt-comp-1">0</span></label>
         <label class="filter-item"><input type="checkbox" value="2" onchange="applyFilters()"> ⭐⭐ Intermédiaire <span class="count" id="cnt-comp-2">0</span></label>
-        <label class="filter-item"><input type="checkbox" value="3" onchange="applyFilters()"> ⭐⭐⭐ Avancé <span class="count" id="cnt-comp-3">0</span></label>
-        <label class="filter-item"><input type="checkbox" value="0" onchange="applyFilters()"> ❓ Non renseigné <span class="count" id="cnt-comp-0">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="3" onchange="applyFilters()"> ⭐⭐⭐ Avancé      <span class="count" id="cnt-comp-3">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="0" onchange="applyFilters()"> ❓ Non renseigné  <span class="count" id="cnt-comp-0">0</span></label>
       </div>
     </div>
 
     <div class="sidebar-section">
       <div class="sidebar-title">Alternatives internes</div>
       <div class="filter-group">
-        <label class="filter-item"><input type="checkbox" value="alt" id="filterAlt" onchange="applyFilters()"> ✅ Avec alternative</label>
+        <label class="filter-item"><input type="checkbox" id="filterAlt" onchange="applyFilters()"> ✅ Avec alternative</label>
       </div>
     </div>
 
@@ -258,9 +267,7 @@
   <main>
     <div class="stats-bar" id="statsBar"></div>
     <div class="toolbar">
-      <div class="toolbar-left">
-        <span class="results-info" id="resultsInfo"></span>
-      </div>
+      <div class="toolbar-left"><span class="results-info" id="resultsInfo"></span></div>
       <div class="view-toggle">
         <button class="view-btn active" id="viewGrid" onclick="setView('grid')" title="Grille">⊞</button>
         <button class="view-btn" id="viewList" onclick="setView('list')" title="Liste">≡</button>
@@ -297,36 +304,45 @@
           <input type="url" id="fUrl" placeholder="https://…">
         </div>
       </div>
+
       <div class="form-group">
-        <label>Licence</label>
-        <div class="licence-select" id="licenceSelect">
-          <span class="licence-label" data-value="Open-source" onclick="setLicence('Open-source')">🟩 Open-source</span>
-          <span class="licence-label" data-value="Propriétaire" onclick="setLicence('Propriétaire')">🟪 Propriétaire</span>
-          <span class="licence-label" data-value="" onclick="setLicence('')" style="color:var(--gris);">❓ NSP</span>
+        <label>Domaine <span style="font-weight:400;color:var(--text-muted);">(sélection multiple)</span></label>
+        <div class="pill-select" id="domaineSelect">
+          <span class="pill-btn" data-group="dom" data-value="Enseignement"  onclick="toggleDomaine('Enseignement')">🎓 Enseignement</span>
+          <span class="pill-btn" data-group="dom" data-value="Recherche"     onclick="toggleDomaine('Recherche')">🔬 Recherche</span>
+          <span class="pill-btn" data-group="dom" data-value="Administratif" onclick="toggleDomaine('Administratif')">🗂 Administratif</span>
         </div>
       </div>
+
+      <div class="form-group">
+        <label>Licence</label>
+        <div class="pill-select">
+          <span class="pill-btn" data-group="lic" data-value="Open-source"  onclick="setSingle('lic','Open-source')">🟩 Open-source</span>
+          <span class="pill-btn" data-group="lic" data-value="Propriétaire" onclick="setSingle('lic','Propriétaire')">🟪 Propriétaire</span>
+          <span class="pill-btn" data-group="lic" data-value=""             onclick="setSingle('lic','')" style="color:var(--gris);">❓ NSP</span>
+        </div>
+      </div>
+
       <div class="form-group">
         <label>Compétences nécessaires</label>
-        <div class="star-select" id="starSelect">
-          <input type="radio" name="stars" id="s0" value="0" class="star-option" checked>
-          <input type="radio" name="stars" id="s1" value="1" class="star-option">
-          <input type="radio" name="stars" id="s2" value="2" class="star-option">
-          <input type="radio" name="stars" id="s3" value="3" class="star-option">
+        <div class="star-select">
           <span class="star-label" data-value="1" onclick="setStar(1)" title="Débutant">⭐</span>
           <span class="star-label" data-value="2" onclick="setStar(2)" title="Intermédiaire">⭐⭐</span>
           <span class="star-label" data-value="3" onclick="setStar(3)" title="Avancé">⭐⭐⭐</span>
-          <span class="star-label" style="font-size:.85rem;color:var(--text-muted);margin-left:4px;align-self:center;" onclick="setStar(0)">✕ effacer</span>
+          <span class="star-label" style="font-size:.85rem;color:var(--text-muted);margin-left:4px;" onclick="setStar(0)">✕ effacer</span>
         </div>
       </div>
+
       <div class="form-group">
         <label>Souveraineté des données</label>
-        <div class="souv-select" id="souvSelect">
-          <span class="souv-label" data-value="Vert" onclick="setSouv('Vert')">🟢 Européen</span>
-          <span class="souv-label" data-value="Orange" onclick="setSouv('Orange')">🟠 Mixte</span>
-          <span class="souv-label" data-value="Rouge" onclick="setSouv('Rouge')">🔴 Non-EU</span>
-          <span class="souv-label" data-value="" onclick="setSouv('')" style="color:var(--gris);">❓ NSP</span>
+        <div class="pill-select">
+          <span class="pill-btn" data-group="souv" data-value="Vert"   onclick="setSingle('souv','Vert')">🟢 Européen</span>
+          <span class="pill-btn" data-group="souv" data-value="Orange" onclick="setSingle('souv','Orange')">🟠 Mixte</span>
+          <span class="pill-btn" data-group="souv" data-value="Rouge"  onclick="setSingle('souv','Rouge')">🔴 Non-EU</span>
+          <span class="pill-btn" data-group="souv" data-value=""       onclick="setSingle('souv','')" style="color:var(--gris);">❓ NSP</span>
         </div>
       </div>
+
       <div class="form-group">
         <label>Description</label>
         <textarea id="fDesc" placeholder="Brève description de l'outil, ses points forts, ses usages pédagogiques…"></textarea>
@@ -354,15 +370,20 @@
 <button class="legend-toggle" onclick="toggleLegend()">📖 Légende</button>
 <div class="legend-panel" id="legendPanel">
   <h3>Légende</h3>
+  <b style="font-size:.75rem;">Domaine</b>
+  <div class="legend-row" style="margin-top:5px;"><span class="legend-icon">🎓</span><span><b>Enseignement</b> — Usage pédagogique, formation, cours</span></div>
+  <div class="legend-row"><span class="legend-icon">🔬</span><span><b>Recherche</b> — Travaux académiques, synthèse, publication</span></div>
+  <div class="legend-row"><span class="legend-icon">🗂</span><span><b>Administratif</b> — Gestion, communication, productivité</span></div>
+  <hr style="margin:8px 0;border:none;border-top:1px solid var(--border);">
   <b style="font-size:.75rem;">Licence</b>
-  <div class="legend-row" style="margin-top:5px;"><span class="legend-icon">🟩</span><span><b>Open-source</b> — Code source ouvert, modifiable et auto-hébergeable</span></div>
+  <div class="legend-row" style="margin-top:5px;"><span class="legend-icon">🟩</span><span><b>Open-source</b> — Code ouvert, auto-hébergeable</span></div>
   <div class="legend-row"><span class="legend-icon">🟪</span><span><b>Propriétaire</b> — Logiciel commercial, code fermé</span></div>
-  <hr style="margin:8px 0; border:none; border-top:1px solid var(--border);">
+  <hr style="margin:8px 0;border:none;border-top:1px solid var(--border);">
   <b style="font-size:.75rem;">Souveraineté</b>
-  <div class="legend-row" style="margin-top:5px;"><span class="legend-icon">🟢</span><span><b>Vert</b> — Hébergé en Europe, opérateur européen<br><i>Ex : Suite Numérique DINUM</i></span></div>
-  <div class="legend-row"><span class="legend-icon">🟠</span><span><b>Orange</b> — Hébergé en Europe, opérateur international<br><i>Ex : Mistral IMT</i></span></div>
-  <div class="legend-row"><span class="legend-icon">🔴</span><span><b>Rouge</b> — Non hébergé en Europe (Cloud Act US)<br><i>Ex : Google, OpenAI</i></span></div>
-  <hr style="margin:8px 0; border:none; border-top:1px solid var(--border);">
+  <div class="legend-row" style="margin-top:5px;"><span class="legend-icon">🟢</span><span><b>Vert</b> — Hébergé en Europe, opérateur européen</span></div>
+  <div class="legend-row"><span class="legend-icon">🟠</span><span><b>Orange</b> — Hébergé en Europe, opérateur international</span></div>
+  <div class="legend-row"><span class="legend-icon">🔴</span><span><b>Rouge</b> — Non hébergé en Europe (Cloud Act US)</span></div>
+  <hr style="margin:8px 0;border:none;border-top:1px solid var(--border);">
   <b style="font-size:.75rem;">Compétences nécessaires</b>
   <div class="legend-row" style="margin-top:5px;"><span class="legend-icon">⭐</span><span><b>Débutant</b> — Maîtrise bureautique</span></div>
   <div class="legend-row"><span class="legend-icon">⭐⭐</span><span><b>Intermédiaire</b> — Outils IA de base</span></div>
@@ -373,21 +394,21 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const STORAGE_KEY = 'veille_outils_v2';
+const STORAGE_KEY = 'veille_outils_v3';
 
 const DEFAULT_OUTILS = [
-  { id: 1,  nom: "Mistral Le Chat Pro", usage: "Générer des contenus",  public: "Personnels, étudiants",       competences: 1, souverainete: "Orange", licence: "Propriétaire", alternative: true,  altDesc: "Mistral IMT",   description: "Modèle IA conversationnel de Mistral AI. Version Pro avec licences acquises par l'INSIC. Idéal pour la génération de texte, la synthèse et l'ingénierie de prompt.", url: "https://chat.mistral.ai", dateAjout: "2026-01-01" },
-  { id: 2,  nom: "Napkin",              usage: "Générer des visuels",    public: "Personnels, étudiants",       competences: 1, souverainete: "Rouge",  licence: "Propriétaire", alternative: false, altDesc: "",              description: "Outil de génération automatique de schémas et visualisations à partir de texte.", url: "https://napkin.ai", dateAjout: "2026-01-01" },
-  { id: 3,  nom: "NotebookLM",          usage: "Synthèse & recherche",   public: "Personnels, étudiants, enseignants", competences: 1, souverainete: "Rouge",  licence: "Propriétaire", alternative: false, altDesc: "",        description: "Outil Google de synthèse de documents, création de podcasts audio et de résumés interactifs à partir de sources.", url: "https://notebooklm.google.com", dateAjout: "2026-01-01" },
-  { id: 4,  nom: "Gamma",               usage: "Créer des slides",       public: "Personnels, enseignants",     competences: 1, souverainete: "Rouge",  licence: "Propriétaire", alternative: false, altDesc: "",              description: "Générateur de présentations par IA. Utilisé pour produire des slides pédagogiques en quelques minutes.", url: "https://gamma.app", dateAjout: "2026-01-01" },
-  { id: 5,  nom: "Claude",              usage: "Générer des contenus",   public: "Personnels, enseignants",     competences: 2, souverainete: "Rouge",  licence: "Propriétaire", alternative: false, altDesc: "",              description: "LLM d'Anthropic. Excellent pour la rédaction longue, l'analyse et le travail sur documents. Forte capacité de raisonnement.", url: "https://claude.ai", dateAjout: "2026-01-01" },
-  { id: 6,  nom: "Gemini",              usage: "Générer des contenus",   public: "Personnels, étudiants",       competences: 1, souverainete: "Rouge",  licence: "Propriétaire", alternative: false, altDesc: "",              description: "LLM de Google intégré à la suite Google Workspace. Accessible directement depuis Gmail, Docs, Slides.", url: "https://gemini.google.com", dateAjout: "2026-01-01" },
-  { id: 7,  nom: "Copilot",             usage: "Générer des contenus",   public: "Personnels",                  competences: 1, souverainete: "Orange", licence: "Propriétaire", alternative: false, altDesc: "",              description: "IA de Microsoft intégrée à Office 365 (Word, PowerPoint, Excel, Teams). Hébergé en Europe par Microsoft.", url: "https://copilot.microsoft.com", dateAjout: "2026-01-01" },
-  { id: 8,  nom: "HeyGen",              usage: "Créer des vidéos",       public: "Enseignants, personnels",     competences: 2, souverainete: "Rouge",  licence: "Propriétaire", alternative: false, altDesc: "",              description: "Plateforme de création de vidéos avec avatars IA. Utilisé pour les vidéos pédagogiques (Fufan Liu, NSM5P).", url: "https://heygen.com", dateAjout: "2026-01-01" },
-  { id: 9,  nom: "ElevenLabs",          usage: "Créer des audios",       public: "Enseignants, personnels",     competences: 2, souverainete: "Rouge",  licence: "Propriétaire", alternative: false, altDesc: "",              description: "Text-to-Speech de haute qualité avec clonage de voix. Voix GuillaumeP utilisée pour les productions IMT.", url: "https://elevenlabs.io", dateAjout: "2026-01-01" },
-  { id: 10, nom: "Google Vids",         usage: "Créer des vidéos",       public: "Personnels, enseignants",     competences: 1, souverainete: "Rouge",  licence: "Propriétaire", alternative: false, altDesc: "",              description: "Outil de création vidéo de Google Workspace. Génère des vidéos à partir de texte ou de slides.", url: "https://workspace.google.com/products/vids", dateAjout: "2026-01-01" },
-  { id: 11, nom: "Clipchamp",           usage: "Montage vidéo",          public: "Personnels, étudiants",       competences: 1, souverainete: "Orange", licence: "Propriétaire", alternative: false, altDesc: "",              description: "Éditeur vidéo en ligne de Microsoft, intégré à Microsoft 365. Simple d'usage, sans installation.", url: "https://clipchamp.com", dateAjout: "2026-01-01" },
-  { id: 12, nom: "N8N",                 usage: "Automatisation",         public: "Personnels techniques",       competences: 3, souverainete: "Vert",   licence: "Open-source",  alternative: false, altDesc: "",              description: "Plateforme d'automatisation de workflows open source, auto-hébergeable. Alternative souveraine à Zapier/Make.", url: "https://n8n.io", dateAjout: "2026-01-01" }
+  { id:1,  nom:"Mistral Le Chat Pro", usage:"Générer des contenus",  public:"Personnels, étudiants",            competences:1, souverainete:"Orange", licence:"Propriétaire", domaine:["Enseignement","Recherche","Administratif"], alternative:true,  altDesc:"Mistral IMT",  description:"Modèle IA conversationnel de Mistral AI. Version Pro avec licences acquises par l'INSIC. Idéal pour la génération de texte, la synthèse et l'ingénierie de prompt.", url:"https://chat.mistral.ai", dateAjout:"2026-01-01" },
+  { id:2,  nom:"Napkin",              usage:"Générer des visuels",    public:"Personnels, étudiants",            competences:1, souverainete:"Rouge",  licence:"Propriétaire", domaine:["Enseignement","Recherche"],                  alternative:false, altDesc:"",             description:"Outil de génération automatique de schémas et visualisations à partir de texte.", url:"https://napkin.ai", dateAjout:"2026-01-01" },
+  { id:3,  nom:"NotebookLM",          usage:"Synthèse & recherche",   public:"Personnels, étudiants, enseignants",competences:1,souverainete:"Rouge",  licence:"Propriétaire", domaine:["Enseignement","Recherche"],                  alternative:false, altDesc:"",             description:"Outil Google de synthèse de documents, création de podcasts audio et de résumés interactifs à partir de sources.", url:"https://notebooklm.google.com", dateAjout:"2026-01-01" },
+  { id:4,  nom:"Gamma",               usage:"Créer des slides",       public:"Personnels, enseignants",          competences:1, souverainete:"Rouge",  licence:"Propriétaire", domaine:["Enseignement","Administratif"],              alternative:false, altDesc:"",             description:"Générateur de présentations par IA. Utilisé pour produire des slides pédagogiques en quelques minutes.", url:"https://gamma.app", dateAjout:"2026-01-01" },
+  { id:5,  nom:"Claude",              usage:"Générer des contenus",   public:"Personnels, enseignants",          competences:2, souverainete:"Rouge",  licence:"Propriétaire", domaine:["Enseignement","Recherche","Administratif"], alternative:false, altDesc:"",             description:"LLM d'Anthropic. Excellent pour la rédaction longue, l'analyse et le travail sur documents. Forte capacité de raisonnement.", url:"https://claude.ai", dateAjout:"2026-01-01" },
+  { id:6,  nom:"Gemini",              usage:"Générer des contenus",   public:"Personnels, étudiants",            competences:1, souverainete:"Rouge",  licence:"Propriétaire", domaine:["Enseignement","Recherche","Administratif"], alternative:false, altDesc:"",             description:"LLM de Google intégré à la suite Google Workspace. Accessible directement depuis Gmail, Docs, Slides.", url:"https://gemini.google.com", dateAjout:"2026-01-01" },
+  { id:7,  nom:"Copilot",             usage:"Générer des contenus",   public:"Personnels",                       competences:1, souverainete:"Orange", licence:"Propriétaire", domaine:["Administratif","Enseignement"],              alternative:false, altDesc:"",             description:"IA de Microsoft intégrée à Office 365 (Word, PowerPoint, Excel, Teams). Hébergé en Europe par Microsoft.", url:"https://copilot.microsoft.com", dateAjout:"2026-01-01" },
+  { id:8,  nom:"HeyGen",              usage:"Créer des vidéos",       public:"Enseignants, personnels",          competences:2, souverainete:"Rouge",  licence:"Propriétaire", domaine:["Enseignement"],                             alternative:false, altDesc:"",             description:"Plateforme de création de vidéos avec avatars IA. Utilisé pour les vidéos pédagogiques (Fufan Liu, NSM5P).", url:"https://heygen.com", dateAjout:"2026-01-01" },
+  { id:9,  nom:"ElevenLabs",          usage:"Créer des audios",       public:"Enseignants, personnels",          competences:2, souverainete:"Rouge",  licence:"Propriétaire", domaine:["Enseignement"],                             alternative:false, altDesc:"",             description:"Text-to-Speech de haute qualité avec clonage de voix. Voix GuillaumeP utilisée pour les productions IMT.", url:"https://elevenlabs.io", dateAjout:"2026-01-01" },
+  { id:10, nom:"Google Vids",         usage:"Créer des vidéos",       public:"Personnels, enseignants",          competences:1, souverainete:"Rouge",  licence:"Propriétaire", domaine:["Enseignement","Administratif"],              alternative:false, altDesc:"",             description:"Outil de création vidéo de Google Workspace. Génère des vidéos à partir de texte ou de slides.", url:"https://workspace.google.com/products/vids", dateAjout:"2026-01-01" },
+  { id:11, nom:"Clipchamp",           usage:"Montage vidéo",          public:"Personnels, étudiants",            competences:1, souverainete:"Orange", licence:"Propriétaire", domaine:["Enseignement","Administratif"],              alternative:false, altDesc:"",             description:"Éditeur vidéo en ligne de Microsoft, intégré à Microsoft 365. Simple d'usage, sans installation.", url:"https://clipchamp.com", dateAjout:"2026-01-01" },
+  { id:12, nom:"N8N",                 usage:"Automatisation",         public:"Personnels techniques",            competences:3, souverainete:"Vert",   licence:"Open-source",  domaine:["Administratif","Recherche"],                 alternative:false, altDesc:"",             description:"Plateforme d'automatisation de workflows open source, auto-hébergeable. Alternative souveraine à Zapier/Make.", url:"https://n8n.io", dateAjout:"2026-01-01" }
 ];
 
 let outils = [];
@@ -396,53 +417,79 @@ let editingId = null;
 let currentStar = 0;
 let currentSouv = '';
 let currentLicence = '';
+let currentDomaine = [];
 let altActive = false;
 
 function loadData() {
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved) {
-    try { outils = JSON.parse(saved); } catch { outils = [...DEFAULT_OUTILS]; }
+    try { outils = JSON.parse(saved); } catch { outils = DEFAULT_OUTILS.map(o => ({...o, domaine: [...(o.domaine||[])]})); }
   } else {
-    outils = DEFAULT_OUTILS.map(o => ({...o}));
+    outils = DEFAULT_OUTILS.map(o => ({...o, domaine: [...(o.domaine||[])]}));
   }
 }
-
 function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(outils)); }
 
 function getFiltered() {
   const search = document.getElementById('searchInput').value.toLowerCase().trim();
-  const souvChecked = [...document.querySelectorAll('#filterSouv input:checked')].map(i => i.value);
-  const compChecked = [...document.querySelectorAll('#filterComp input:checked')].map(i => i.value);
+  const souvChecked  = [...document.querySelectorAll('#filterSouv input:checked')].map(i => i.value);
+  const compChecked  = [...document.querySelectorAll('#filterComp input:checked')].map(i => i.value);
   const usageChecked = [...document.querySelectorAll('#filterUsage input:checked')].map(i => i.value);
-  const licenceChecked = [...document.querySelectorAll('#filterLicence input:checked')].map(i => i.value);
+  const licChecked   = [...document.querySelectorAll('input[value="Open-source"]:checked, input[value="Propriétaire"]:checked, input[onchange*="applyFilters"][value=""]:checked')].map(i=>i.value);
+  // domaine filter
+  const domChecked   = ['Enseignement','Recherche','Administratif'].filter(d => {
+    const cb = document.querySelector(`input[value="${d}"]`);
+    return cb && cb.checked;
+  });
+  const licenceChecked = ['Open-source','Propriétaire'].filter(v => {
+    const cb = document.querySelector(`#filterLicRow input[value="${v}"]`) || [...document.querySelectorAll('.filter-item input')].find(i=>i.value===v&&i.closest('.sidebar-section'));
+    return cb && cb.checked;
+  });
   const altOnly = document.getElementById('filterAlt').checked;
+
+  // Re-read all sidebar checkboxes cleanly
+  const allChecked = {};
+  document.querySelectorAll('aside .filter-item input[type=checkbox]').forEach(cb => {
+    if (!allChecked[cb.closest('.sidebar-section')?.querySelector('.sidebar-title')?.textContent]) {
+      allChecked[cb.closest('.sidebar-section')?.querySelector('.sidebar-title')?.textContent] = [];
+    }
+    if (cb.checked) allChecked[cb.closest('.sidebar-section')?.querySelector('.sidebar-title')?.textContent].push(cb.value);
+  });
+
+  const domF   = allChecked['Domaine'] || [];
+  const usageF = allChecked["Cas d'usage"] || [];
+  const licF   = allChecked['Licence'] || [];
+  const souvF  = allChecked['Souveraineté'] || [];
+  const compF  = allChecked['Compétences requises'] || [];
+  const altF   = document.getElementById('filterAlt').checked;
 
   return outils.filter(o => {
     if (search && ![o.nom, o.usage, o.description, o.public].join(' ').toLowerCase().includes(search)) return false;
-    if (souvChecked.length && !souvChecked.includes(o.souverainete)) return false;
-    if (compChecked.length && !compChecked.includes(String(o.competences || 0))) return false;
-    if (usageChecked.length && !usageChecked.includes(o.usage)) return false;
-    if (licenceChecked.length && !licenceChecked.includes(o.licence || '')) return false;
-    if (altOnly && !o.alternative) return false;
+    if (domF.length   && !domF.some(d => (o.domaine||[]).includes(d))) return false;
+    if (usageF.length && !usageF.includes(o.usage)) return false;
+    if (licF.length   && !licF.includes(o.licence||'')) return false;
+    if (souvF.length  && !souvF.includes(o.souverainete||'')) return false;
+    if (compF.length  && !compF.includes(String(o.competences||0))) return false;
+    if (altF && !o.alternative) return false;
     return true;
   });
 }
 
 function renderStats() {
-  const total = outils.length;
-  const vert = outils.filter(o => o.souverainete === 'Vert').length;
-  const orange = outils.filter(o => o.souverainete === 'Orange').length;
-  const rouge = outils.filter(o => o.souverainete === 'Rouge').length;
+  const total      = outils.length;
+  const ens        = outils.filter(o => (o.domaine||[]).includes('Enseignement')).length;
+  const rech       = outils.filter(o => (o.domaine||[]).includes('Recherche')).length;
+  const admin      = outils.filter(o => (o.domaine||[]).includes('Administratif')).length;
   const opensource = outils.filter(o => o.licence === 'Open-source').length;
-  const usages = [...new Set(outils.map(o => o.usage).filter(Boolean))].length;
+  const vert       = outils.filter(o => o.souverainete === 'Vert').length;
 
   document.getElementById('statsBar').innerHTML = `
     <div class="stat-chip"><div><div class="stat-number">${total}</div><div class="stat-label">Outils référencés</div></div></div>
+    <div class="stat-chip"><div><div class="stat-number" style="color:var(--indigo)">${ens}</div><div class="stat-label">🎓 Enseignement</div></div></div>
+    <div class="stat-chip"><div><div class="stat-number" style="color:var(--amber)">${rech}</div><div class="stat-label">🔬 Recherche</div></div></div>
+    <div class="stat-chip"><div><div class="stat-number" style="color:var(--slate)">${admin}</div><div class="stat-label">🗂 Administratif</div></div></div>
     <div class="stat-chip"><div><div class="stat-number" style="color:var(--teal)">${opensource}</div><div class="stat-label">🟩 Open-source</div></div></div>
     <div class="stat-chip"><div><div class="stat-number" style="color:var(--vert)">${vert}</div><div class="stat-label">🟢 Souverains EU</div></div></div>
-    <div class="stat-chip"><div><div class="stat-number" style="color:var(--orange)">${orange}</div><div class="stat-label">🟠 Mixtes</div></div></div>
-    <div class="stat-chip"><div><div class="stat-number" style="color:var(--rouge)">${rouge}</div><div class="stat-label">🔴 Non-EU</div></div></div>
-    <div class="stat-chip"><div><div class="stat-number" style="color:#7c3aed">${usages}</div><div class="stat-label">Cas d'usage</div></div></div>
   `;
 }
 
@@ -457,22 +504,26 @@ function renderFilters() {
   document.getElementById('usageList').innerHTML = usages.map(u => `<option value="${u}">`).join('');
 
   ['Vert','Orange','Rouge',''].forEach(v => {
-    const el = document.getElementById('cnt-' + v);
-    if (el) el.textContent = outils.filter(o => o.souverainete === v).length;
+    const el = document.getElementById('cnt-'+v);
+    if (el) el.textContent = outils.filter(o => (o.souverainete||'') === v).length;
   });
   [0,1,2,3].forEach(n => {
-    const el = document.getElementById('cnt-comp-' + n);
-    if (el) el.textContent = outils.filter(o => (o.competences || 0) === n).length;
+    const el = document.getElementById('cnt-comp-'+n);
+    if (el) el.textContent = outils.filter(o => (o.competences||0) === n).length;
   });
   ['Open-source','Propriétaire',''].forEach(v => {
-    const el = document.getElementById('cnt-lic-' + v);
-    if (el) el.textContent = outils.filter(o => (o.licence || '') === v).length;
+    const el = document.getElementById('cnt-lic-'+v);
+    if (el) el.textContent = outils.filter(o => (o.licence||'') === v).length;
+  });
+  ['Enseignement','Recherche','Administratif'].forEach(d => {
+    const el = document.getElementById('cnt-dom-'+d);
+    if (el) el.textContent = outils.filter(o => (o.domaine||[]).includes(d)).length;
   });
 }
 
 function renderCards() {
   const filtered = getFiltered();
-  document.getElementById('resultsInfo').textContent = `${filtered.length} outil${filtered.length > 1 ? 's' : ''} affiché${filtered.length > 1 ? 's' : ''}`;
+  document.getElementById('resultsInfo').textContent = `${filtered.length} outil${filtered.length>1?'s':''} affiché${filtered.length>1?'s':''}`;
   const grid = document.getElementById('cardsGrid');
 
   if (!filtered.length) {
@@ -480,16 +531,16 @@ function renderCards() {
     return;
   }
 
+  const domTag = { Enseignement:'tag-ens', Recherche:'tag-rech', Administratif:'tag-admin' };
+  const domIcon = { Enseignement:'🎓', Recherche:'🔬', Administratif:'🗂' };
+
   grid.innerHTML = filtered.map(o => {
     const souvClass = {'Vert':'badge-vert','Orange':'badge-orange','Rouge':'badge-rouge'}[o.souverainete] || 'badge-gris';
     const souvLabel = {'Vert':'🟢 Européen','Orange':'🟠 Mixte','Rouge':'🔴 Non-EU','':'❓ NSP'}[o.souverainete] ?? '❓ NSP';
     const stars = o.competences ? '⭐'.repeat(o.competences) : '';
     const starTitle = ['','Débutant','Intermédiaire','Avancé'][o.competences] || '';
-    const licenceTag = o.licence === 'Open-source'
-      ? `<span class="tag tag-opensource">🟩 Open-source</span>`
-      : o.licence === 'Propriétaire'
-      ? `<span class="tag tag-proprio">🟪 Propriétaire</span>`
-      : '';
+    const licTag = o.licence==='Open-source' ? `<span class="tag tag-opensource">🟩 Open-source</span>` : o.licence==='Propriétaire' ? `<span class="tag tag-proprio">🟪 Propriétaire</span>` : '';
+    const domTags = (o.domaine||[]).map(d => `<span class="tag ${domTag[d]}">${domIcon[d]} ${d}</span>`).join('');
     return `<div class="card">
       <div class="card-header">
         <div class="card-name">${o.nom}</div>
@@ -500,9 +551,10 @@ function renderCards() {
       </div>
       <div class="card-tags">
         ${o.usage ? `<span class="tag tag-usage">${o.usage}</span>` : ''}
-        ${licenceTag}
+        ${domTags}
+        ${licTag}
         ${o.public ? `<span class="tag tag-public">👤 ${o.public}</span>` : ''}
-        ${o.alternative ? `<span class="tag tag-alt">✅ ${o.altDesc || 'Alt. interne'}</span>` : ''}
+        ${o.alternative ? `<span class="tag tag-alt">✅ ${o.altDesc||'Alt. interne'}</span>` : ''}
       </div>
       <div class="card-meta">
         <span class="badge ${souvClass}">${souvLabel}</span>
@@ -517,66 +569,71 @@ function renderCards() {
 
 function formatDate(d) {
   if (!d) return '—';
-  try { return new Date(d).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}); }
+  try { return new Date(d).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}); }
   catch { return d; }
 }
 
 function render() { renderStats(); renderFilters(); renderCards(); }
-
 function applyFilters() { renderCards(); }
 function clearFilters() {
   document.getElementById('searchInput').value = '';
-  document.querySelectorAll('.filter-item input[type=checkbox]').forEach(i => i.checked = false);
+  document.querySelectorAll('aside .filter-item input[type=checkbox]').forEach(i => i.checked = false);
   renderCards();
 }
 function setView(v) {
-  currentView = v;
-  document.getElementById('cardsGrid').classList.toggle('list-view', v === 'list');
-  document.getElementById('viewGrid').classList.toggle('active', v === 'grid');
-  document.getElementById('viewList').classList.toggle('active', v === 'list');
+  document.getElementById('cardsGrid').classList.toggle('list-view', v==='list');
+  document.getElementById('viewGrid').classList.toggle('active', v==='grid');
+  document.getElementById('viewList').classList.toggle('active', v==='list');
 }
 
-function openModal(id = null) {
+// ── MODAL ────────────────────────────────────────────────────────────────────
+function openModal(id=null) {
   editingId = id;
-  const o = id ? outils.find(t => t.id === id) : null;
+  const o = id ? outils.find(t=>t.id===id) : null;
   document.getElementById('modalTitle').textContent = o ? "Modifier l'outil" : 'Ajouter un outil';
-  document.getElementById('fNom').value = o?.nom || '';
-  document.getElementById('fUsage').value = o?.usage || '';
-  document.getElementById('fPublic').value = o?.public || '';
-  document.getElementById('fUrl').value = o?.url || '';
-  document.getElementById('fDesc').value = o?.description || '';
-  document.getElementById('fAltDesc').value = o?.altDesc || '';
+  document.getElementById('fNom').value    = o?.nom         || '';
+  document.getElementById('fUsage').value  = o?.usage       || '';
+  document.getElementById('fPublic').value = o?.public      || '';
+  document.getElementById('fUrl').value    = o?.url         || '';
+  document.getElementById('fDesc').value   = o?.description || '';
+  document.getElementById('fAltDesc').value= o?.altDesc     || '';
   setStar(o?.competences || 0);
-  setSouv(o?.souverainete || '');
-  setLicence(o?.licence || '');
+  setSingle('souv', o?.souverainete || '');
+  setSingle('lic',  o?.licence      || '');
+  currentDomaine = [...(o?.domaine || [])];
+  renderDomaineUI();
   altActive = o?.alternative || false;
   updateAltUI();
   const footer = document.getElementById('modalFooter');
   footer.innerHTML = o
-    ? `<button class="btn btn-modal-delete" onclick="deleteOutil(${o.id}, true)">🗑 Supprimer</button><button class="btn btn-modal-cancel" onclick="closeModal()">Annuler</button><button class="btn btn-modal-save" onclick="saveOutil()">Enregistrer</button>`
+    ? `<button class="btn btn-modal-delete" onclick="deleteOutil(${o.id},true)">🗑 Supprimer</button><button class="btn btn-modal-cancel" onclick="closeModal()">Annuler</button><button class="btn btn-modal-save" onclick="saveOutil()">Enregistrer</button>`
     : `<button class="btn btn-modal-cancel" onclick="closeModal()">Annuler</button><button class="btn btn-modal-save" onclick="saveOutil()">Enregistrer</button>`;
   document.getElementById('modalBackdrop').classList.add('open');
-  setTimeout(() => document.getElementById('fNom').focus(), 150);
+  setTimeout(()=>document.getElementById('fNom').focus(),150);
 }
-
-function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); editingId = null; }
-function handleBackdropClick(e) { if (e.target === document.getElementById('modalBackdrop')) closeModal(); }
+function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); editingId=null; }
+function handleBackdropClick(e) { if (e.target===document.getElementById('modalBackdrop')) closeModal(); }
 
 function setStar(n) {
   currentStar = n;
-  document.querySelectorAll('.star-label[data-value]').forEach(el => el.classList.toggle('active', parseInt(el.dataset.value) === n));
+  document.querySelectorAll('.star-label[data-value]').forEach(el => el.classList.toggle('active', parseInt(el.dataset.value)===n));
 }
-function setSouv(v) {
-  currentSouv = v;
-  document.querySelectorAll('.souv-label').forEach(el => el.classList.toggle('active', el.dataset.value === v));
+function setSingle(group, v) {
+  if (group==='souv') currentSouv = v;
+  if (group==='lic')  currentLicence = v;
+  document.querySelectorAll(`.pill-btn[data-group="${group}"]`).forEach(el => el.classList.toggle('active', el.dataset.value===v));
 }
-function setLicence(v) {
-  currentLicence = v;
-  document.querySelectorAll('.licence-label').forEach(el => el.classList.toggle('active', el.dataset.value === v));
+function toggleDomaine(v) {
+  const idx = currentDomaine.indexOf(v);
+  if (idx>=0) currentDomaine.splice(idx,1); else currentDomaine.push(v);
+  renderDomaineUI();
 }
-function toggleAlt() { altActive = !altActive; updateAltUI(); }
+function renderDomaineUI() {
+  document.querySelectorAll('.pill-btn[data-group="dom"]').forEach(el => el.classList.toggle('active', currentDomaine.includes(el.dataset.value)));
+}
+function toggleAlt() { altActive=!altActive; updateAltUI(); }
 function updateAltUI() {
-  document.getElementById('altToggle').classList.toggle('on', altActive);
+  document.getElementById('altToggle').classList.toggle('on',altActive);
   document.getElementById('altLabel').textContent = altActive ? 'Oui' : 'Non';
   document.getElementById('altDescGroup').style.display = altActive ? 'flex' : 'none';
 }
@@ -585,23 +642,22 @@ function saveOutil() {
   const nom = document.getElementById('fNom').value.trim();
   if (!nom) { document.getElementById('fNom').focus(); showToast("Le nom de l'outil est requis."); return; }
   const today = new Date().toISOString().split('T')[0];
-  const data = { nom, usage: document.getElementById('fUsage').value.trim(), public: document.getElementById('fPublic').value.trim(), url: document.getElementById('fUrl').value.trim(), description: document.getElementById('fDesc').value.trim(), competences: currentStar, souverainete: currentSouv, licence: currentLicence, alternative: altActive, altDesc: document.getElementById('fAltDesc').value.trim() };
+  const data = { nom, usage:document.getElementById('fUsage').value.trim(), public:document.getElementById('fPublic').value.trim(), url:document.getElementById('fUrl').value.trim(), description:document.getElementById('fDesc').value.trim(), competences:currentStar, souverainete:currentSouv, licence:currentLicence, domaine:[...currentDomaine], alternative:altActive, altDesc:document.getElementById('fAltDesc').value.trim() };
   if (editingId) {
-    const idx = outils.findIndex(o => o.id === editingId);
-    if (idx >= 0) outils[idx] = { ...outils[idx], ...data };
+    const idx = outils.findIndex(o=>o.id===editingId);
+    if (idx>=0) outils[idx] = {...outils[idx],...data};
     showToast('✅ Outil mis à jour');
   } else {
-    const newId = outils.length ? Math.max(...outils.map(o => o.id)) + 1 : 1;
-    outils.push({ id: newId, ...data, dateAjout: today });
+    outils.push({id: outils.length ? Math.max(...outils.map(o=>o.id))+1 : 1, ...data, dateAjout:today});
     showToast('✅ Outil ajouté');
   }
   saveData(); closeModal(); render();
 }
 
-function deleteOutil(id, fromModal = false) {
-  const o = outils.find(t => t.id === id);
+function deleteOutil(id, fromModal=false) {
+  const o = outils.find(t=>t.id===id);
   if (!o || !confirm(`Supprimer "${o.nom}" ?`)) return;
-  outils = outils.filter(t => t.id !== id);
+  outils = outils.filter(t=>t.id!==id);
   saveData();
   if (fromModal) closeModal();
   render();
@@ -611,21 +667,23 @@ function deleteOutil(id, fromModal = false) {
 function toggleExport(btn) {
   const dd = document.getElementById('exportDropdown');
   dd.classList.toggle('open');
-  document.addEventListener('click', function closeDD(e) { if (!btn.closest('.export-menu').contains(e.target)) { dd.classList.remove('open'); document.removeEventListener('click', closeDD); } });
+  document.addEventListener('click', function f(e) { if (!btn.closest('.export-menu').contains(e.target)) { dd.classList.remove('open'); document.removeEventListener('click',f); } });
 }
 function exportJSON() {
-  download(new Blob([JSON.stringify(outils, null, 2)], {type: 'application/json'}), 'veille_outils_ia.json');
+  download(new Blob([JSON.stringify(outils,null,2)],{type:'application/json'}),'veille_outils_ia.json');
   document.getElementById('exportDropdown').classList.remove('open');
 }
 function exportCSV() {
-  const headers = ['id','nom','usage','public','competences','souverainete','licence','alternative','altDesc','description','url','dateAjout'];
-  const rows = outils.map(o => headers.map(h => `"${(o[h]??'').toString().replace(/"/g,'""')}"`).join(','));
-  download(new Blob([headers.join(',') + '\n' + rows.join('\n')], {type: 'text/csv;charset=utf-8;'}), 'veille_outils_ia.csv');
+  const headers = ['id','nom','usage','public','competences','souverainete','licence','domaine','alternative','altDesc','description','url','dateAjout'];
+  const rows = outils.map(o => headers.map(h => {
+    const v = h==='domaine' ? (o[h]||[]).join(';') : (o[h]??'');
+    return `"${v.toString().replace(/"/g,'""')}"`;
+  }).join(','));
+  download(new Blob([headers.join(',')+'\n'+rows.join('\n')],{type:'text/csv;charset=utf-8;'}),'veille_outils_ia.csv');
   document.getElementById('exportDropdown').classList.remove('open');
 }
-function download(blob, name) {
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = name; a.click(); URL.revokeObjectURL(a.href);
+function download(blob,name) {
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click(); URL.revokeObjectURL(a.href);
 }
 
 function toggleLegend() { document.getElementById('legendPanel').classList.toggle('open'); }
@@ -633,13 +691,12 @@ function toggleLegend() { document.getElementById('legendPanel').classList.toggl
 let toastTimer;
 function showToast(msg) {
   clearTimeout(toastTimer);
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  toastTimer=setTimeout(()=>t.classList.remove('show'),2800);
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
 loadData();
 render();
 </script>
