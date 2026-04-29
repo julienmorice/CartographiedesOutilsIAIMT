@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartographie des Outils IA — IMT-BS</title>
+<style>
+  :root {
+    --vert: #16a34a;
+    --vert-bg: #dcfce7;
+    --orange: #ea580c;
+    --orange-bg: #ffedd5;
+    --rouge: #dc2626;
+    --rouge-bg: #fee2e2;
+    --gris: #6b7280;
+    --gris-bg: #f3f4f6;
+    --bleu: #1d4ed8;
+    --bleu-bg: #dbeafe;
+    --bleu-clair: #eff6ff;
+    --border: #e5e7eb;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --bg: #f9fafb;
+    --white: #ffffff;
+    --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+    --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,.1), 0 4px 6px rgba(0,0,0,.05);
+    --radius: 8px;
+    --radius-lg: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #1e3a5f 0%, #1d4ed8 100%);
+    color: white; padding: 20px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: var(--shadow-md);
+  }
+  header h1 { font-size: 1.4rem; font-weight: 700; }
+  header p { font-size: .85rem; opacity: .8; margin-top: 2px; }
+  .header-actions { display: flex; gap: 10px; }
+  .btn { padding: 8px 16px; border-radius: var(--radius); font-size: .875rem; font-weight: 600; cursor: pointer; border: none; transition: all .15s; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-primary { background: white; color: var(--bleu); }
+  .btn-primary:hover { background: #e0e7ff; }
+  .btn-outline { background: transparent; color: white; border: 1.5px solid rgba(255,255,255,.5); }
+  .btn-outline:hover { background: rgba(255,255,255,.1); }
+
+  /* LAYOUT */
+  .layout { display: flex; min-height: calc(100vh - 72px); }
+
+  /* SIDEBAR */
+  aside {
+    width: 260px; min-width: 260px; background: var(--white); border-right: 1px solid var(--border);
+    padding: 20px; overflow-y: auto; position: sticky; top: 0; max-height: calc(100vh - 72px);
+  }
+  .sidebar-section { margin-bottom: 24px; }
+  .sidebar-title { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); margin-bottom: 10px; }
+  .filter-group { display: flex; flex-direction: column; gap: 6px; }
+  .filter-item { display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 5px 8px; border-radius: 6px; font-size: .875rem; transition: background .1s; user-select: none; }
+  .filter-item:hover { background: var(--gris-bg); }
+  .filter-item input[type=checkbox] { width: 15px; height: 15px; accent-color: var(--bleu); cursor: pointer; }
+  .filter-item .count { margin-left: auto; background: var(--gris-bg); color: var(--gris); font-size: .75rem; font-weight: 600; padding: 1px 7px; border-radius: 99px; }
+
+  .search-box { width: 100%; padding: 8px 12px; border: 1.5px solid var(--border); border-radius: var(--radius); font-size: .875rem; outline: none; transition: border-color .15s; }
+  .search-box:focus { border-color: var(--bleu); }
+
+  /* MAIN */
+  main { flex: 1; padding: 24px; overflow: auto; }
+
+  /* STATS BAR */
+  .stats-bar { display: flex; gap: 14px; margin-bottom: 20px; flex-wrap: wrap; }
+  .stat-chip {
+    background: var(--white); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 10px 16px; display: flex; align-items: center; gap: 10px; box-shadow: var(--shadow);
+  }
+  .stat-number { font-size: 1.5rem; font-weight: 800; color: var(--bleu); line-height: 1; }
+  .stat-label { font-size: .78rem; color: var(--text-muted); font-weight: 500; }
+
+  /* TOOLBAR */
+  .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+  .toolbar-left { display: flex; align-items: center; gap: 10px; flex: 1; }
+  .results-info { font-size: .875rem; color: var(--text-muted); }
+  .view-toggle { display: flex; border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+  .view-btn { padding: 6px 12px; background: none; border: none; cursor: pointer; color: var(--text-muted); transition: all .1s; font-size: .85rem; }
+  .view-btn.active { background: var(--bleu); color: white; }
+
+  /* GRID */
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+  .cards-grid.list-view { grid-template-columns: 1fr; }
+
+  /* CARD */
+  .card {
+    background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg);
+    padding: 16px; box-shadow: var(--shadow); transition: all .15s; cursor: default;
+    display: flex; flex-direction: column; gap: 10px; position: relative;
+  }
+  .card:hover { box-shadow: var(--shadow-md); border-color: #c7d2fe; transform: translateY(-1px); }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .card-name { font-size: 1rem; font-weight: 700; color: var(--text); }
+  .card-actions { display: flex; gap: 4px; opacity: 0; transition: opacity .15s; }
+  .card:hover .card-actions { opacity: 1; }
+  .icon-btn { padding: 4px 6px; background: none; border: 1.5px solid var(--border); border-radius: 5px; cursor: pointer; font-size: .8rem; color: var(--text-muted); transition: all .1s; }
+  .icon-btn:hover { background: var(--gris-bg); color: var(--text); }
+  .icon-btn.danger:hover { background: var(--rouge-bg); color: var(--rouge); border-color: var(--rouge); }
+
+  .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+  .tag { font-size: .75rem; padding: 2px 8px; border-radius: 99px; font-weight: 500; }
+  .tag-usage { background: var(--bleu-bg); color: var(--bleu); }
+  .tag-public { background: #f5f3ff; color: #6d28d9; }
+  .tag-alt { background: #ecfdf5; color: #065f46; }
+
+  .card-meta { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; }
+  .badge-vert { background: var(--vert-bg); color: var(--vert); }
+  .badge-orange { background: var(--orange-bg); color: var(--orange); }
+  .badge-rouge { background: var(--rouge-bg); color: var(--rouge); }
+  .badge-gris { background: var(--gris-bg); color: var(--gris); }
+  .stars { color: #f59e0b; font-size: .85rem; letter-spacing: .5px; }
+
+  .card-desc { font-size: .82rem; color: var(--text-muted); line-height: 1.5; }
+  .card-url a { font-size: .78rem; color: var(--bleu); text-decoration: none; }
+  .card-url a:hover { text-decoration: underline; }
+  .card-date { font-size: .72rem; color: var(--text-muted); margin-top: auto; }
+
+  /* LIST VIEW */
+  .list-view .card { flex-direction: row; align-items: center; padding: 12px 16px; gap: 16px; }
+  .list-view .card-header { min-width: 160px; }
+  .list-view .card-tags { flex: 1; }
+  .list-view .card-meta { margin-left: auto; flex-shrink: 0; }
+  .list-view .card-desc { display: none; }
+  .list-view .card-date { display: none; }
+
+  /* EMPTY STATE */
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .empty-state p { font-size: 1rem; }
+  .empty-icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+  /* MODAL */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 100;
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--white); border-radius: var(--radius-lg); width: 100%; max-width: 580px;
+    max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg);
+    transform: scale(.95); transition: transform .2s;
+  }
+  .modal-backdrop.open .modal { transform: scale(1); }
+  .modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .modal-title { font-size: 1.1rem; font-weight: 700; }
+  .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted); padding: 4px; border-radius: 4px; }
+  .modal-close:hover { background: var(--gris-bg); }
+  .modal-body { padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+  .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+  .form-group { display: flex; flex-direction: column; gap: 5px; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  label { font-size: .82rem; font-weight: 600; color: var(--text); }
+  label .required { color: var(--rouge); }
+  input[type=text], input[type=url], textarea, select {
+    padding: 8px 12px; border: 1.5px solid var(--border); border-radius: var(--radius);
+    font-size: .875rem; outline: none; transition: border-color .15s; font-family: inherit;
+    background: white; color: var(--text); width: 100%;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--bleu); }
+  textarea { resize: vertical; min-height: 72px; }
+  .star-select { display: flex; gap: 8px; }
+  .star-option { display: none; }
+  .star-label {
+    cursor: pointer; font-size: 1.5rem; color: #d1d5db; transition: color .1s; padding: 4px;
+    border-radius: 6px;
+  }
+  .star-label:hover, .star-label.active { color: #f59e0b; }
+  .souv-select { display: flex; gap: 8px; }
+  .souv-option { display: none; }
+  .souv-label {
+    cursor: pointer; padding: 6px 12px; border-radius: 6px; font-size: .82rem; font-weight: 600;
+    border: 2px solid var(--border); transition: all .1s;
+  }
+  .souv-label[data-value="Vert"]:hover, .souv-label[data-value="Vert"].active { background: var(--vert-bg); color: var(--vert); border-color: var(--vert); }
+  .souv-label[data-value="Orange"]:hover, .souv-label[data-value="Orange"].active { background: var(--orange-bg); color: var(--orange); border-color: var(--orange); }
+  .souv-label[data-value="Rouge"]:hover, .souv-label[data-value="Rouge"].active { background: var(--rouge-bg); color: var(--rouge); border-color: var(--rouge); }
+  .souv-label[data-value=""].active { background: var(--gris-bg); color: var(--gris); border-color: var(--gris); }
+  .alt-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+  .toggle { width: 42px; height: 24px; background: var(--border); border-radius: 99px; position: relative; transition: background .15s; flex-shrink: 0; }
+  .toggle.on { background: var(--vert); }
+  .toggle::after { content: ''; width: 18px; height: 18px; background: white; border-radius: 50%; position: absolute; top: 3px; left: 3px; transition: transform .15s; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
+  .toggle.on::after { transform: translateX(18px); }
+  .btn-modal-cancel { background: var(--gris-bg); color: var(--text); }
+  .btn-modal-cancel:hover { background: var(--border); }
+  .btn-modal-save { background: var(--bleu); color: white; }
+  .btn-modal-save:hover { background: #1e40af; }
+  .btn-modal-delete { background: var(--rouge-bg); color: var(--rouge); margin-right: auto; }
+  .btn-modal-delete:hover { background: #fca5a5; }
+
+  /* LEGEND PANEL */
+  .legend-panel {
+    position: fixed; bottom: 20px; right: 20px; background: white; border: 1px solid var(--border);
+    border-radius: var(--radius-lg); padding: 14px 16px; box-shadow: var(--shadow-lg);
+    font-size: .78rem; max-width: 260px; z-index: 50;
+    transform: translateY(120%); transition: transform .2s;
+  }
+  .legend-panel.open { transform: translateY(0); }
+  .legend-panel h3 { font-size: .8rem; font-weight: 700; margin-bottom: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+  .legend-row { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
+  .legend-row:last-child { margin-bottom: 0; }
+  .legend-icon { flex-shrink: 0; width: 16px; text-align: center; }
+  .legend-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 51; border-radius: 99px; padding: 8px 14px; font-size: .8rem; background: var(--bleu); color: white; border: none; cursor: pointer; box-shadow: var(--shadow-md); }
+  .legend-panel.open ~ .legend-toggle { display: none; }
+
+  /* TOAST */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #1f2937; color: white; padding: 10px 20px; border-radius: var(--radius);
+    font-size: .875rem; z-index: 200; transition: transform .25s; white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* EXPORT */
+  .export-menu { position: relative; }
+  .export-dropdown {
+    position: absolute; top: calc(100% + 6px); right: 0; background: white;
+    border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-md);
+    min-width: 160px; z-index: 60; display: none; overflow: hidden;
+  }
+  .export-dropdown.open { display: block; }
+  .export-item { padding: 9px 14px; font-size: .85rem; cursor: pointer; transition: background .1s; }
+  .export-item:hover { background: var(--bleu-clair); }
+
+  @media (max-width: 768px) {
+    aside { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>🗂 Cartographie des Outils IA</h1>
+    <p>IMT Business School — Veille pédagogique</p>
+  </div>
+  <div class="header-actions">
+    <div class="export-menu">
+      <button class="btn btn-outline" onclick="toggleExport(this)">⬇ Exporter</button>
+      <div class="export-dropdown" id="exportDropdown">
+        <div class="export-item" onclick="exportJSON()">📄 JSON</div>
+        <div class="export-item" onclick="exportCSV()">📊 CSV</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="openModal()">＋ Ajouter un outil</button>
+  </div>
+</header>
+
+<div class="layout">
+  <aside>
+    <div class="sidebar-section">
+      <div class="sidebar-title">Recherche</div>
+      <input type="text" class="search-box" id="searchInput" placeholder="Nom, usage, description…" oninput="applyFilters()">
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Cas d'usage</div>
+      <div class="filter-group" id="filterUsage"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Souveraineté</div>
+      <div class="filter-group" id="filterSouv">
+        <label class="filter-item"><input type="checkbox" value="Vert" onchange="applyFilters()"> <span class="badge badge-vert">🟢 Européen</span> <span class="count" id="cnt-Vert">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="Orange" onchange="applyFilters()"> <span class="badge badge-orange">🟠 Mixte</span> <span class="count" id="cnt-Orange">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="Rouge" onchange="applyFilters()"> <span class="badge badge-rouge">🔴 Non-EU</span> <span class="count" id="cnt-Rouge">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="" onchange="applyFilters()"> <span class="badge badge-gris">❓ Non renseigné</span> <span class="count" id="cnt-">0</span></label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Compétences requises</div>
+      <div class="filter-group" id="filterComp">
+        <label class="filter-item"><input type="checkbox" value="1" onchange="applyFilters()"> ⭐ Débutant <span class="count" id="cnt-comp-1">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="2" onchange="applyFilters()"> ⭐⭐ Intermédiaire <span class="count" id="cnt-comp-2">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="3" onchange="applyFilters()"> ⭐⭐⭐ Avancé <span class="count" id="cnt-comp-3">0</span></label>
+        <label class="filter-item"><input type="checkbox" value="0" onchange="applyFilters()"> ❓ Non renseigné <span class="count" id="cnt-comp-0">0</span></label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Alternatives internes</div>
+      <div class="filter-group">
+        <label class="filter-item"><input type="checkbox" value="alt" id="filterAlt" onchange="applyFilters()"> ✅ Avec alternative</label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <button class="btn" style="width:100%;justify-content:center;background:var(--gris-bg);color:var(--text);" onclick="clearFilters()">Effacer les filtres</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="stats-bar" id="statsBar"></div>
+
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <span class="results-info" id="resultsInfo"></span>
+      </div>
+      <div class="view-toggle">
+        <button class="view-btn active" id="viewGrid" onclick="setView('grid')" title="Grille">⊞</button>
+        <button class="view-btn" id="viewList" onclick="setView('list')" title="Liste">≡</button>
+      </div>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid"></div>
+  </main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" onclick="handleBackdropClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">Ajouter un outil</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nom de l'outil <span class="required">*</span></label>
+        <input type="text" id="fNom" placeholder="Ex : Mistral Le Chat Pro">
+      </div>
+      <div class="form-group">
+        <label>Cas d'usage</label>
+        <input type="text" id="fUsage" placeholder="Ex : Générer des contenus, Créer des vidéos…" list="usageList">
+        <datalist id="usageList"></datalist>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Public cible</label>
+          <input type="text" id="fPublic" placeholder="Ex : Personnels, Étudiants…">
+        </div>
+        <div class="form-group">
+          <label>URL de l'outil</label>
+          <input type="url" id="fUrl" placeholder="https://…">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Compétences nécessaires</label>
+        <div class="star-select" id="starSelect">
+          <input type="radio" name="stars" id="s0" value="0" class="star-option" checked>
+          <input type="radio" name="stars" id="s1" value="1" class="star-option">
+          <input type="radio" name="stars" id="s2" value="2" class="star-option">
+          <input type="radio" name="stars" id="s3" value="3" class="star-option">
+          <span class="star-label" data-value="1" onclick="setStar(1)" title="Débutant">⭐</span>
+          <span class="star-label" data-value="2" onclick="setStar(2)" title="Intermédiaire">⭐⭐</span>
+          <span class="star-label" data-value="3" onclick="setStar(3)" title="Avancé">⭐⭐⭐</span>
+          <span class="star-label" style="font-size:.85rem;color:var(--text-muted);margin-left:4px;align-self:center;" id="starReset" onclick="setStar(0)">✕ effacer</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Souveraineté des données</label>
+        <div class="souv-select" id="souvSelect">
+          <span class="souv-label" data-value="Vert" onclick="setSouv('Vert')">🟢 Européen</span>
+          <span class="souv-label" data-value="Orange" onclick="setSouv('Orange')">🟠 Mixte</span>
+          <span class="souv-label" data-value="Rouge" onclick="setSouv('Rouge')">🔴 Non-EU</span>
+          <span class="souv-label" data-value="" onclick="setSouv('')" style="color:var(--gris);">❓ NSP</span>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="fDesc" placeholder="Brève description de l'outil, ses points forts, ses usages pédagogiques…"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Alternative interne disponible ?</label>
+        <div class="alt-toggle" onclick="toggleAlt()">
+          <div class="toggle" id="altToggle"></div>
+          <span id="altLabel" style="font-size:.875rem;">Non</span>
+        </div>
+      </div>
+      <div class="form-group" id="altDescGroup" style="display:none;">
+        <label>Quelle alternative interne ?</label>
+        <input type="text" id="fAltDesc" placeholder="Ex : Mistral IMT, Suite Numérique DINUM…">
+      </div>
+    </div>
+    <div class="modal-footer" id="modalFooter">
+      <button class="btn btn-modal-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-modal-save" onclick="saveOutil()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- LEGEND -->
+<button class="legend-toggle" onclick="toggleLegend()">📖 Légende</button>
+<div class="legend-panel" id="legendPanel">
+  <h3>Légende</h3>
+  <b style="font-size:.75rem;">Souveraineté</b>
+  <div class="legend-row" style="margin-top:5px;"><span class="legend-icon">🟢</span><span><b>Vert</b> — Hébergé en Europe, opérateur européen<br><i>Ex : Suite Numérique DINUM</i></span></div>
+  <div class="legend-row"><span class="legend-icon">🟠</span><span><b>Orange</b> — Hébergé en Europe, opérateur international<br><i>Ex : Mistral IMT</i></span></div>
+  <div class="legend-row"><span class="legend-icon">🔴</span><span><b>Rouge</b> — Non hébergé en Europe (Cloud Act US)<br><i>Ex : Google, OpenAI</i></span></div>
+  <hr style="margin:8px 0; border:none; border-top:1px solid var(--border);">
+  <b style="font-size:.75rem;">Compétences nécessaires</b>
+  <div class="legend-row" style="margin-top:5px;"><span class="legend-icon">⭐</span><span><b>Débutant</b> — Maîtrise bureautique</span></div>
+  <div class="legend-row"><span class="legend-icon">⭐⭐</span><span><b>Intermédiaire</b> — Outils IA de base</span></div>
+  <div class="legend-row"><span class="legend-icon">⭐⭐⭐</span><span><b>Avancé</b> — Maîtrise du code / API</span></div>
+  <button onclick="toggleLegend()" style="margin-top:10px;width:100%;padding:5px;border-radius:5px;background:var(--gris-bg);border:none;cursor:pointer;font-size:.8rem;">Fermer</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const STORAGE_KEY = 'veille_outils_v1';
+
+const DEFAULT_OUTILS = [
+  { id: 1, nom: "Mistral Le Chat Pro", usage: "Générer des contenus", public: "Personnels, étudiants", competences: 1, souverainete: "Orange", alternative: true, altDesc: "Mistral IMT", description: "Modèle IA conversationnel de Mistral AI. Version Pro avec licences acquises par l'INSIC. Idéal pour la génération de texte, la synthèse et l'ingénierie de prompt.", url: "https://chat.mistral.ai", dateAjout: "2026-01-01" },
+  { id: 2, nom: "Napkin", usage: "Générer des visuels", public: "Personnels, étudiants", competences: 1, souverainete: "Rouge", alternative: false, altDesc: "", description: "Outil de génération automatique de schémas et visualisations à partir de texte.", url: "https://napkin.ai", dateAjout: "2026-01-01" },
+  { id: 3, nom: "NotebookLM", usage: "Synthèse & recherche", public: "Personnels, étudiants, enseignants", competences: 1, souverainete: "Rouge", alternative: false, altDesc: "", description: "Outil Google de synthèse de documents, création de podcasts audio et de résumés interactifs à partir de sources.", url: "https://notebooklm.google.com", dateAjout: "2026-01-01" },
+  { id: 4, nom: "Gamma", usage: "Créer des slides", public: "Personnels, enseignants", competences: 1, souverainete: "Rouge", alternative: false, altDesc: "", description: "Générateur de présentations par IA. Utilisé pour produire des slides pédagogiques en quelques minutes.", url: "https://gamma.app", dateAjout: "2026-01-01" },
+  { id: 5, nom: "Claude", usage: "Générer des contenus", public: "Personnels, enseignants", competences: 2, souverainete: "Rouge", alternative: false, altDesc: "", description: "LLM d'Anthropic. Excellent pour la rédaction longue, l'analyse et le travail sur documents. Forte capacité de raisonnement.", url: "https://claude.ai", dateAjout: "2026-01-01" },
+  { id: 6, nom: "Gemini", usage: "Générer des contenus", public: "Personnels, étudiants", competences: 1, souverainete: "Rouge", alternative: false, altDesc: "", description: "LLM de Google intégré à la suite Google Workspace. Accessible directement depuis Gmail, Docs, Slides.", url: "https://gemini.google.com", dateAjout: "2026-01-01" },
+  { id: 7, nom: "Copilot", usage: "Générer des contenus", public: "Personnels", competences: 1, souverainete: "Orange", alternative: false, altDesc: "", description: "IA de Microsoft intégrée à Office 365 (Word, PowerPoint, Excel, Teams). Hébergé en Europe par Microsoft.", url: "https://copilot.microsoft.com", dateAjout: "2026-01-01" },
+  { id: 8, nom: "HeyGen", usage: "Créer des vidéos", public: "Enseignants, personnels", competences: 2, souverainete: "Rouge", alternative: false, altDesc: "", description: "Plateforme de création de vidéos avec avatars IA. Utilisé pour les vidéos pédagogiques (Fufan Liu, NSM5P).", url: "https://heygen.com", dateAjout: "2026-01-01" },
+  { id: 9, nom: "ElevenLabs", usage: "Créer des audios", public: "Enseignants, personnels", competences: 2, souverainete: "Rouge", alternative: false, altDesc: "", description: "Text-to-Speech de haute qualité avec clonage de voix. Voix GuillaumeP utilisée pour les productions IMT-BS.", url: "https://elevenlabs.io", dateAjout: "2026-01-01" },
+  { id: 10, nom: "Google Vids", usage: "Créer des vidéos", public: "Personnels, enseignants", competences: 1, souverainete: "Rouge", alternative: false, altDesc: "", description: "Outil de création vidéo de Google Workspace. Génère des vidéos à partir de texte ou de slides.", url: "https://workspace.google.com/products/vids", dateAjout: "2026-01-01" },
+  { id: 11, nom: "Clipchamp", usage: "Montage vidéo", public: "Personnels, étudiants", competences: 1, souverainete: "Orange", alternative: false, altDesc: "", description: "Éditeur vidéo en ligne de Microsoft, intégré à Microsoft 365. Simple d'usage, sans installation.", url: "https://clipchamp.com", dateAjout: "2026-01-01" },
+  { id: 12, nom: "N8N", usage: "Automatisation", public: "Personnels techniques", competences: 3, souverainete: "Vert", alternative: false, altDesc: "", description: "Plateforme d'automatisation de workflows open source, auto-hébergeable. Alternative souveraine à Zapier/Make.", url: "https://n8n.io", dateAjout: "2026-01-01" }
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let outils = [];
+let currentView = 'grid';
+let editingId = null;
+let currentStar = 0;
+let currentSouv = '';
+let altActive = false;
+
+function loadData() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) {
+    try { outils = JSON.parse(saved); } catch { outils = [...DEFAULT_OUTILS]; }
+  } else {
+    outils = [...DEFAULT_OUTILS];
+  }
+}
+
+function saveData() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(outils));
+}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function getFiltered() {
+  const search = document.getElementById('searchInput').value.toLowerCase().trim();
+  const souvChecked = [...document.querySelectorAll('#filterSouv input:checked')].map(i => i.value);
+  const compChecked = [...document.querySelectorAll('#filterComp input:checked')].map(i => i.value);
+  const usageChecked = [...document.querySelectorAll('#filterUsage input:checked')].map(i => i.value);
+  const altOnly = document.getElementById('filterAlt').checked;
+
+  return outils.filter(o => {
+    if (search && ![o.nom, o.usage, o.description, o.public].join(' ').toLowerCase().includes(search)) return false;
+    if (souvChecked.length && !souvChecked.includes(o.souverainete)) return false;
+    if (compChecked.length && !compChecked.includes(String(o.competences || 0))) return false;
+    if (usageChecked.length && !usageChecked.includes(o.usage)) return false;
+    if (altOnly && !o.alternative) return false;
+    return true;
+  });
+}
+
+function renderStats() {
+  const total = outils.length;
+  const vert = outils.filter(o => o.souverainete === 'Vert').length;
+  const orange = outils.filter(o => o.souverainete === 'Orange').length;
+  const rouge = outils.filter(o => o.souverainete === 'Rouge').length;
+  const usages = [...new Set(outils.map(o => o.usage).filter(Boolean))].length;
+
+  document.getElementById('statsBar').innerHTML = `
+    <div class="stat-chip"><div><div class="stat-number">${total}</div><div class="stat-label">Outils référencés</div></div></div>
+    <div class="stat-chip"><div><div class="stat-number" style="color:var(--vert)">${vert}</div><div class="stat-label">🟢 Souverains EU</div></div></div>
+    <div class="stat-chip"><div><div class="stat-number" style="color:var(--orange)">${orange}</div><div class="stat-label">🟠 Mixtes</div></div></div>
+    <div class="stat-chip"><div><div class="stat-number" style="color:var(--rouge)">${rouge}</div><div class="stat-label">🔴 Non-EU</div></div></div>
+    <div class="stat-chip"><div><div class="stat-number" style="color:#7c3aed">${usages}</div><div class="stat-label">Cas d'usage</div></div></div>
+  `;
+}
+
+function renderFilters() {
+  // Usage
+  const usages = [...new Set(outils.map(o => o.usage).filter(Boolean))].sort();
+  const container = document.getElementById('filterUsage');
+  const checked = [...container.querySelectorAll('input:checked')].map(i => i.value);
+  container.innerHTML = usages.map(u => {
+    const cnt = outils.filter(o => o.usage === u).length;
+    return `<label class="filter-item"><input type="checkbox" value="${u}" ${checked.includes(u)?'checked':''} onchange="applyFilters()"> <span>${u}</span> <span class="count">${cnt}</span></label>`;
+  }).join('');
+
+  // Datalist for modal
+  document.getElementById('usageList').innerHTML = usages.map(u => `<option value="${u}">`).join('');
+
+  // Souv counts
+  ['Vert','Orange','Rouge',''].forEach(v => {
+    const el = document.getElementById('cnt-' + v);
+    if (el) el.textContent = outils.filter(o => o.souverainete === v).length;
+  });
+  // Comp counts
+  [0,1,2,3].forEach(n => {
+    const el = document.getElementById('cnt-comp-' + n);
+    if (el) el.textContent = outils.filter(o => (o.competences || 0) === n).length;
+  });
+}
+
+function renderCards() {
+  const filtered = getFiltered();
+  document.getElementById('resultsInfo').textContent = `${filtered.length} outil${filtered.length > 1 ? 's' : ''} affiché${filtered.length > 1 ? 's' : ''}`;
+  const grid = document.getElementById('cardsGrid');
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><p>Aucun outil ne correspond aux filtres sélectionnés.</p></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(o => {
+    const souvClass = {'Vert':'badge-vert','Orange':'badge-orange','Rouge':'badge-rouge'}[o.souverainete] || 'badge-gris';
+    const souvLabel = {'Vert':'🟢 Européen','Orange':'🟠 Mixte','Rouge':'🔴 Non-EU','':'❓ NSP'}[o.souverainete] ?? '❓ NSP';
+    const stars = o.competences ? '⭐'.repeat(o.competences) : '';
+    const starTitle = ['','Débutant','Intermédiaire','Avancé'][o.competences] || '';
+    return `<div class="card">
+      <div class="card-header">
+        <div class="card-name">${o.nom}</div>
+        <div class="card-actions">
+          <button class="icon-btn" onclick="openModal(${o.id})" title="Modifier">✏️</button>
+          <button class="icon-btn danger" onclick="deleteOutil(${o.id})" title="Supprimer">🗑</button>
+        </div>
+      </div>
+      <div class="card-tags">
+        ${o.usage ? `<span class="tag tag-usage">${o.usage}</span>` : ''}
+        ${o.public ? `<span class="tag tag-public">👤 ${o.public}</span>` : ''}
+        ${o.alternative ? `<span class="tag tag-alt">✅ ${o.altDesc || 'Alt. interne'}</span>` : ''}
+      </div>
+      <div class="card-meta">
+        <span class="badge ${souvClass}">${souvLabel}</span>
+        ${stars ? `<span class="stars" title="${starTitle}">${stars}</span>` : ''}
+      </div>
+      ${o.description ? `<div class="card-desc">${o.description}</div>` : ''}
+      ${o.url ? `<div class="card-url"><a href="${o.url}" target="_blank" rel="noopener">🔗 ${new URL(o.url).hostname}</a></div>` : ''}
+      <div class="card-date">Ajouté le ${formatDate(o.dateAjout)}</div>
+    </div>`;
+  }).join('');
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  try { return new Date(d).toLocaleDateString('fr-FR', {day:'numeric',month:'long',year:'numeric'}); }
+  catch { return d; }
+}
+
+function render() { renderStats(); renderFilters(); renderCards(); }
+
+// ── FILTERS ───────────────────────────────────────────────────────────────────
+function applyFilters() { renderCards(); }
+function clearFilters() {
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.filter-item input[type=checkbox]').forEach(i => i.checked = false);
+  renderCards();
+}
+function setView(v) {
+  currentView = v;
+  const grid = document.getElementById('cardsGrid');
+  grid.classList.toggle('list-view', v === 'list');
+  document.getElementById('viewGrid').classList.toggle('active', v === 'grid');
+  document.getElementById('viewList').classList.toggle('active', v === 'list');
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────────────
+function openModal(id = null) {
+  editingId = id;
+  const o = id ? outils.find(t => t.id === id) : null;
+  document.getElementById('modalTitle').textContent = o ? 'Modifier l\'outil' : 'Ajouter un outil';
+  document.getElementById('fNom').value = o?.nom || '';
+  document.getElementById('fUsage').value = o?.usage || '';
+  document.getElementById('fPublic').value = o?.public || '';
+  document.getElementById('fUrl').value = o?.url || '';
+  document.getElementById('fDesc').value = o?.description || '';
+  document.getElementById('fAltDesc').value = o?.altDesc || '';
+  setStar(o?.competences || 0);
+  setSouv(o?.souverainete || '');
+  altActive = o?.alternative || false;
+  updateAltUI();
+
+  const footer = document.getElementById('modalFooter');
+  footer.innerHTML = o
+    ? `<button class="btn btn-modal-delete" onclick="deleteOutil(${o.id}, true)">🗑 Supprimer</button><button class="btn btn-modal-cancel" onclick="closeModal()">Annuler</button><button class="btn btn-modal-save" onclick="saveOutil()">Enregistrer</button>`
+    : `<button class="btn btn-modal-cancel" onclick="closeModal()">Annuler</button><button class="btn btn-modal-save" onclick="saveOutil()">Enregistrer</button>`;
+
+  document.getElementById('modalBackdrop').classList.add('open');
+  setTimeout(() => document.getElementById('fNom').focus(), 150);
+}
+
+function closeModal() { document.getElementById('modalBackdrop').classList.remove('open'); editingId = null; }
+function handleBackdropClick(e) { if (e.target === document.getElementById('modalBackdrop')) closeModal(); }
+
+function setStar(n) {
+  currentStar = n;
+  document.querySelectorAll('.star-label[data-value]').forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.value) === n);
+  });
+}
+
+function setSouv(v) {
+  currentSouv = v;
+  document.querySelectorAll('.souv-label').forEach(el => {
+    el.classList.toggle('active', el.dataset.value === v);
+  });
+}
+
+function toggleAlt() {
+  altActive = !altActive;
+  updateAltUI();
+}
+
+function updateAltUI() {
+  document.getElementById('altToggle').classList.toggle('on', altActive);
+  document.getElementById('altLabel').textContent = altActive ? 'Oui' : 'Non';
+  document.getElementById('altDescGroup').style.display = altActive ? 'flex' : 'none';
+}
+
+function saveOutil() {
+  const nom = document.getElementById('fNom').value.trim();
+  if (!nom) { document.getElementById('fNom').focus(); showToast('Le nom de l\'outil est requis.'); return; }
+
+  const today = new Date().toISOString().split('T')[0];
+  if (editingId) {
+    const idx = outils.findIndex(o => o.id === editingId);
+    if (idx >= 0) {
+      outils[idx] = { ...outils[idx], nom, usage: document.getElementById('fUsage').value.trim(), public: document.getElementById('fPublic').value.trim(), url: document.getElementById('fUrl').value.trim(), description: document.getElementById('fDesc').value.trim(), competences: currentStar, souverainete: currentSouv, alternative: altActive, altDesc: document.getElementById('fAltDesc').value.trim() };
+    }
+    showToast('✅ Outil mis à jour');
+  } else {
+    const newId = outils.length ? Math.max(...outils.map(o => o.id)) + 1 : 1;
+    outils.push({ id: newId, nom, usage: document.getElementById('fUsage').value.trim(), public: document.getElementById('fPublic').value.trim(), url: document.getElementById('fUrl').value.trim(), description: document.getElementById('fDesc').value.trim(), competences: currentStar, souverainete: currentSouv, alternative: altActive, altDesc: document.getElementById('fAltDesc').value.trim(), dateAjout: today });
+    showToast('✅ Outil ajouté');
+  }
+  saveData();
+  closeModal();
+  render();
+}
+
+function deleteOutil(id, fromModal = false) {
+  const o = outils.find(t => t.id === id);
+  if (!o) return;
+  if (!confirm(`Supprimer "${o.nom}" ?`)) return;
+  outils = outils.filter(t => t.id !== id);
+  saveData();
+  if (fromModal) closeModal();
+  render();
+  showToast('🗑 Outil supprimé');
+}
+
+// ── EXPORT ────────────────────────────────────────────────────────────────────
+function toggleExport(btn) {
+  const dd = document.getElementById('exportDropdown');
+  dd.classList.toggle('open');
+  document.addEventListener('click', function closeDD(e) { if (!btn.closest('.export-menu').contains(e.target)) { dd.classList.remove('open'); document.removeEventListener('click', closeDD); } });
+}
+
+function exportJSON() {
+  const blob = new Blob([JSON.stringify(outils, null, 2)], {type: 'application/json'});
+  download(blob, 'veille_outils_ia.json');
+  document.getElementById('exportDropdown').classList.remove('open');
+}
+
+function exportCSV() {
+  const headers = ['id','nom','usage','public','competences','souverainete','alternative','altDesc','description','url','dateAjout'];
+  const rows = outils.map(o => headers.map(h => `"${(o[h]??'').toString().replace(/"/g,'""')}"`).join(','));
+  const blob = new Blob([headers.join(',') + '\n' + rows.join('\n')], {type: 'text/csv;charset=utf-8;'});
+  download(blob, 'veille_outils_ia.csv');
+  document.getElementById('exportDropdown').classList.remove('open');
+}
+
+function download(blob, name) {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = name; a.click(); URL.revokeObjectURL(a.href);
+}
+
+// ── LEGEND ────────────────────────────────────────────────────────────────────
+function toggleLegend() { document.getElementById('legendPanel').classList.toggle('open'); }
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg) {
+  clearTimeout(toastTimer);
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── KEYBOARD ──────────────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+loadData();
+render();
+</script>
+</body>
+</html>
